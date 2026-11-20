@@ -18,7 +18,7 @@ brew install unagents/tap/tokenbox
 Linux（x86_64 / aarch64、glibc 2.31 以上）:
 
 ```
-V=0.1.0; T=$(uname -m)-unknown-linux-gnu
+V=0.1.1; T=$(uname -m)-unknown-linux-gnu
 curl -fsSL -o /tmp/tb.tgz https://github.com/unagents/tokenbox/releases/download/v$V/tokenbox-v$V-$T.tar.gz
 curl -fsSL https://github.com/unagents/tokenbox/releases/download/v$V/SHA256SUMS | grep "tokenbox-v$V-$T.tar.gz" | sed 's#  .*#  /tmp/tb.tgz#' | sha256sum -c -
 sudo tar -xzf /tmp/tb.tgz -C /usr/local/bin tokenbox && rm /tmp/tb.tgz

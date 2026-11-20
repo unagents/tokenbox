@@ -214,7 +214,12 @@ fn push(checkout: &Checkout, url: &str, commit: Oid) -> std::result::Result<(), 
             return Err(git2::Error::from_str("the credentials from the git configuration were not accepted"));
         }
         if allowed.contains(CredentialType::USER_PASS_PLAINTEXT) {
-            Cred::credential_helper(&config, url, username)
+            match crate::credential::lookup(&config, url, username) {
+                Some((user, pass)) => Cred::userpass_plaintext(&user, &pass),
+                None => Err(git2::Error::from_str(
+                    "no credential helper in the git configuration returned a username and password for this URL",
+                )),
+            }
         } else if allowed.contains(CredentialType::SSH_KEY) {
             Cred::ssh_key_from_agent(username.unwrap_or("git"))
         } else if allowed.contains(CredentialType::DEFAULT) {

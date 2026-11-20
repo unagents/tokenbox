@@ -800,7 +800,7 @@ dependencies = [
 
 [[package]]
 name = "tokenbox"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "argon2",
  "chacha20poly1305",
@@ -809,6 +809,7 @@ dependencies = [
  "rpassword",
  "secrecy",
  "tempfile",
+ "url",
 ]
 
 [[package]]

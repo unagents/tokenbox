@@ -23,6 +23,7 @@ tokenbox/
   src/
     main.rs             # clap でサブコマンド
     cli.rs
+    credential.rs       # push の認証をホストの git 設定の credential helper から読む
     error.rs            # 失敗の種類と終了コード
     store.rs            # git2 で取得・push。受け皿は一時 bare repo（SPEC §6）
     crypto.rs           # key 名からファイル名と鍵を導出、暗号化・復号（SPEC §4）

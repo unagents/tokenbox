@@ -1,4 +1,5 @@
 mod cli;
+mod credential;
 mod crypto;
 mod error;
 mod input;

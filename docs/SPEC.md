@@ -66,6 +66,7 @@ status: v0.2（2026-11-21）。`register` / `get` は実装済み（v0.1.0）。
 - 取得（`get`、および `register` の事前取得）は常に無認証で行う。認証情報を送らない。
 - サーバーが認証を要求したら、「store は public 必須」としてエラー終了する（終了コード 4）。git プロトコルでは private と「URL の誤り・repo が無い」を区別できないことがあるため、エラー文には両方の可能性を書く。
 - 書き込み（`register` の push）のときだけ認証を使う。認証はホストの git 設定から読む。HTTP(S) は credential helper、SSH は ssh-agent。tokenbox は token やパスワードを受け取らず、保存もしない。
+- credential helper の設定は gitcredentials の規則で読む: 無指定の `credential.helper` と、URL に合う `credential.<url>.helper` を設定の順に集める。値が空の `helper` はそれまでの helper を取り消す。`username` と `useHttpPath` も読む。
 - credential helper の実行には、その helper を提供するプログラム（多くは git に付属）がホストに要る。読み取りには要らない。
 - 取得が無認証のため、store の git URL は HTTP(S) かローカルパスを使う（SSH の URL は常に認証を要求する）。
 
@@ -113,3 +114,4 @@ status: v0.2（2026-11-21）。`register` / `get` は実装済み（v0.1.0）。
 - U6（決定 2026-11-21）: OS のクリップボード用コマンドを呼ぶ（§3）。Linux と Windows は未検証。
 - U7（決定 2026-11-21）: store 内のディレクトリ名（`v1`）を版とする（§4）。
 - U8（確認 2026-11-21）: macOS の credential helper から認証を読み、HTTP の store へ push できた。Linux の helper と SSH は未検証。
+  - v0.1.0 は、store のホストが IP アドレスのとき URL 付きの `credential.<url>.helper` を読まなかった（`git2` の helper 検索がドメイン名のホストしか扱わないため）。v0.1.1 で helper の検索を自前の実装に置き換えて直した。
