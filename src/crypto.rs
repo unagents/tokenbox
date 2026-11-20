@@ -1,5 +1,5 @@
 //! Derives the store file name and the encryption key from a key name, and
-//! encrypts / decrypts values (SPEC §4).
+//! encrypts / decrypts values.
 //!
 //! One Argon2id run over the key name yields 64 bytes. The first half becomes
 //! the public file name, the second half the secret encryption key. Guessing a

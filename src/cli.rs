@@ -1,4 +1,4 @@
-//! Command line definition (SPEC §3).
+//! Command line definition.
 
 use clap::{Parser, Subcommand};
 

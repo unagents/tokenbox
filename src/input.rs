@@ -1,4 +1,4 @@
-//! Reads the value for `register` (SPEC §3): hidden prompt, clipboard or stdin.
+//! Reads the value for `register`: hidden prompt, clipboard or stdin.
 
 use std::io::{IsTerminal, Read};
 use std::process::Command;

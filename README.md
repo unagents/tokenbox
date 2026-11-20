@@ -1,11 +1,6 @@
 # tokenbox
 
-共有の秘密（トークン・API キー）を、利用側が指定した git repo（store）に暗号化して置き、git URL と key 名を知る者が取り出すための CLI。tokenbox は仕組みだけを提供し、store の場所は引数 `<git-url>` で毎回渡す（`tokenbox <git-url> register <key-name>` / `tokenbox <git-url> get <key-name>`）。Rust 製、単一バイナリ、macOS / Linux / Windows。
-
-- 仕様: [docs/SPEC.md](docs/SPEC.md)
-- 作業手順（開発・配布）: [docs/WORKFLOW.md](docs/WORKFLOW.md)
-- 配布設計（brew tap / apt / winget / npx）: [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md)
-- 決定の記録: [docs/DECISIONS.md](docs/DECISIONS.md)
+共有の秘密（トークン・API キー）を、利用側が指定した git repo（store）に暗号化して置き、git URL と key 名を知る者が取り出すための CLI。Rust 製、単一バイナリ。
 
 ## インストール
 
@@ -31,18 +26,16 @@ tokenbox <git-url> register <key-name>          # 隠し入力。--clipboard / -
 tokenbox <git-url> get <key-name>               # 値を stdout に出す
 ```
 
-store（`<git-url>` の repo）は public であること。読めるのは git URL と key 名の両方を知る者。key 名には長いランダムな部分を付ける。
+- store（`<git-url>` の repo）は public であること。取得は無認証で行う。
+- `register` は push するため、ホストの git 設定に store への書き込みの認証が要る。
+- 読めるのは git URL と key 名の両方を知る者。key 名には長いランダムな部分を付ける。
+- store の場所も key 名も、tokenbox は保存しない。毎回引数で渡す。
 
 ## 文書の規約
 
-この repo の文書には、**特定のネットワークの事情を書かない**。tokenbox は仕組みだけを提供し、利用側のネットワークを知らない。
+この repo にはコードだけを置く（実装、テスト、ビルドと release の定義、この README）。
 
-書かないもの: store の場所（git URL・repo 名）、秘密の一覧と用途、key 名、ホストの名前や IP、社内の registry や CI の実行環境、アカウント名、運用手順、既存の仕組みからの移行手順。これらは利用側が自分の管理場所に置く。
+次のものは、この repo に置かない。
 
-## repo
-
-| 場所 | 用途 |
-|---|---|
-| GitHub `unagents/tokenbox` | ソース。GitHub Actions で release・npm publish |
-| GitHub `unagents/homebrew-tap` | `Formula/tokenbox.rb` |
-| npm `@unagents/tokenbox` | `npx @unagents/tokenbox` 用ラッパー + プラットフォーム別バイナリ |
+- 仕様・設計・決定・進捗などの文書。
+- 特定のネットワークの事情（store の場所、秘密の一覧と用途、key 名、ホストの名前や IP、社内の registry や CI の実行環境、アカウント名、運用手順）。

@@ -1,4 +1,4 @@
-//! Failure kinds and their exit codes (SPEC §3).
+//! Failure kinds and their exit codes.
 
 use std::fmt;
 

@@ -1,4 +1,4 @@
-//! Talks to the store over the git protocol with libgit2 (SPEC §5, §6).
+//! Talks to the store over the git protocol with libgit2.
 //!
 //! Every call works in a temporary bare repository that is removed when the
 //! call returns, so nothing about the store stays on the host. Reads never

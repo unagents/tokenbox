@@ -33,7 +33,7 @@ jobs:
 
   build-linux:
     runs-on: ${{ matrix.runner }}
-    # Debian 11 keeps the glibc floor at 2.31 (DISTRIBUTION §1).
+    # Debian 11 keeps the glibc floor at 2.31.
     container: rust:1-bullseye
     strategy:
       fail-fast: false
