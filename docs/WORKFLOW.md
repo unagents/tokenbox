@@ -1,11 +1,11 @@
 # tokenbox — 作業手順
 
-status: draft v0.1。設計のみ完了（2026-11-21）。実装は未着手。順番どおりに進め、各段の終わりに「確認」を満たしてから次へ。配布する側の基盤（社内の registry、CI の実行環境、対象ホスト）での作業は、この repo の文書に書かない（README「文書の規約」）。
+status: v0.1.0（2026-11-21）。§2〜§3 は実施済み、§4 は mac と Linux の tar.gz・brew まで実施済み（`.deb`・npm・winget は未着手）。配布する側の基盤（社内の registry、CI の実行環境、対象ホスト）での作業は、この repo の文書に書かない（README「文書の規約」）。
 
 ## 0. 前提の確認（着手前）
 
 - [x] GitHub `unagents` org と `homebrew-tap` が存在する（確認済み）。
-- [ ] Rust toolchain（stable）。クロスビルドは CI に任せ、手元は host target のみ。
+- [x] Rust toolchain（stable）。クロスビルドは CI に任せ、手元は host target のみ。
 - [x] 決定済み: U5（npm）= optionalDependencies、D2 = 保留、D3 = GitHub secrets。U3 = Windows 保留。SPEC v0.2（2026-11-21）で未確定の番号を振り直した。U1（暗号の方式）・U2（push の競合）・U8（credential helper）は実装前に決める（SPEC §10）。
 - [ ] 着手時に読むもの: `docs/SPEC.md` → `docs/DISTRIBUTION.md` → このファイル。`docs/DECISIONS.md` は理由の参照用。
 
@@ -23,10 +23,11 @@ tokenbox/
   src/
     main.rs             # clap でサブコマンド
     cli.rs
+    error.rs            # 失敗の種類と終了コード
     store.rs            # git2 で取得・push。受け皿は一時 bare repo（SPEC §6）
     crypto.rs           # key 名からファイル名と鍵を導出、暗号化・復号（SPEC §4）
     input.rs            # register の入力（隠し入力 / --clipboard / --stdin）
-    secret.rs           # Secret<String>（Display で伏せる）
+  tests/e2e.rs          # ローカルの bare repo を store にした E2E
   npm/                  # §DISTRIBUTION 5
   packaging/
     deb/                # control, postinst
@@ -36,7 +37,7 @@ tokenbox/
   docs/
 ```
 
-主要 crate: `clap`（derive）、`git2`、`secrecy`、`anyhow`、`rpassword`（隠し入力）。暗号の crate は SPEC §10 U1、クリップボードの crate は U6 を決めてから選ぶ。
+主要 crate: `clap`（derive）、`git2`、`secrecy`（値を `Debug` で伏せる）、`rpassword`（隠し入力）、`argon2`、`chacha20poly1305`、`tempfile`。
 
 確認: `cargo build` が通り、`tokenbox --help` がサブコマンド一覧を出す。
 
@@ -51,7 +52,7 @@ tokenbox/
 
 E2E（手元、一時ディレクトリで）: bare repo を store に見立て、`register` → 別の作業ディレクトリから `get` の値が一致。違う key 名の `get` は終了コード 2。実行後、ホストに受け皿が残っていない。
 
-確認: E2E が通る。
+確認: E2E が通る（`cargo test`）。
 
 ## 4. 配布を組む（v0.1 の範囲は DISTRIBUTION §7）
 

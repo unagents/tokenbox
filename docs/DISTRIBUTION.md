@@ -17,7 +17,7 @@ tag `v*` で CI を起動し、`cargo build --release` で各 target をビル�
 - 各成果物に `sha256` を `SHA256SUMS` として添付。brew / winget / npm はこれを参照する。
 - Linux は glibc 2.31 以上（Ubuntu 20.04 相当）を下限。musl 静的ビルドは v0.1 では採らない。当初の理由（`git` コマンドに依存する時点で動的環境前提）は、`git` コマンドを使わない決定（SPEC §6）で成り立たなくなったため、要否は未確定 D5。
 - ビルドツール: `cargo-dist` を使う案と、手書き workflow の案。**手書き**にする（cargo-dist は apt/winget の面倒を見ないため、結局 4 経路のうち 2 つは自前になる）。
-- CI: GitHub Actions（`unagents/tokenbox`）が mac の成果物・GitHub Release・brew・npm を担当する。Linux の成果物と `.deb` をどの CI で作るかは、配布する側の基盤に依存する。
+- CI: GitHub Actions（`unagents/tokenbox`、`.github/workflows/release.yml`）が mac と Linux の tar.gz、`SHA256SUMS`、GitHub Release を作る（v0.1.0 で実施）。Linux は Debian 11 のコンテナでビルドして glibc の下限を守る。`.deb`・npm・brew Formula の自動更新は未実装。apt repository への publish をどの CI で行うかは、配布する側の基盤に依存する。
 - workflow 定義には、配布する側の基盤の URL・ホスト名・認証を直書きしない。CI の変数・secret で渡す。
 
 ## 2. macOS — Homebrew tap

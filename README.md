@@ -7,6 +7,32 @@
 - 配布設計（brew tap / apt / winget / npx）: [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md)
 - 決定の記録: [docs/DECISIONS.md](docs/DECISIONS.md)
 
+## インストール
+
+macOS（Homebrew）:
+
+```
+brew install unagents/tap/tokenbox
+```
+
+Linux（x86_64 / aarch64、glibc 2.31 以上）:
+
+```
+V=0.1.0; T=$(uname -m)-unknown-linux-gnu
+curl -fsSL -o /tmp/tb.tgz https://github.com/unagents/tokenbox/releases/download/v$V/tokenbox-v$V-$T.tar.gz
+curl -fsSL https://github.com/unagents/tokenbox/releases/download/v$V/SHA256SUMS | grep "tokenbox-v$V-$T.tar.gz" | sed 's#  .*#  /tmp/tb.tgz#' | sha256sum -c -
+sudo tar -xzf /tmp/tb.tgz -C /usr/local/bin tokenbox && rm /tmp/tb.tgz
+```
+
+## 使い方
+
+```
+tokenbox <git-url> register <key-name>          # 隠し入力。--clipboard / --stdin も可
+tokenbox <git-url> get <key-name>               # 値を stdout に出す
+```
+
+store（`<git-url>` の repo）は public であること。読めるのは git URL と key 名の両方を知る者。key 名には長いランダムな部分を付ける。
+
 ## 文書の規約
 
 この repo の文書には、**特定のネットワークの事情を書かない**。tokenbox は仕組みだけを提供し、利用側のネットワークを知らない。

@@ -1,0 +1,32 @@
+[package]
+name = "tokenbox"
+version = "0.1.0"
+edition = "2021"
+description = "Store secrets encrypted in a git repo and retrieve them by git URL and key name"
+repository = "https://github.com/unagents/tokenbox"
+publish = false
+
+[[bin]]
+name = "tokenbox"
+path = "src/main.rs"
+
+[dependencies]
+argon2 = "0.5"
+chacha20poly1305 = "0.10"
+clap = { version = "4", features = ["derive"] }
+git2 = { version = "0.21", features = ["https", "ssh", "vendored-libgit2", "vendored-openssl"] }
+rpassword = "7"
+secrecy = "0.10"
+tempfile = "3"
+
+[profile.release]
+strip = true
+lto = "thin"
+
+# Key derivation is deliberately slow; keep it bearable in debug and test builds.
+[profile.dev.package."*"]
+opt-level = 2
+
+[dev-dependencies]
+git2 = { version = "0.21", features = ["vendored-libgit2"] }
+tempfile = "3"
